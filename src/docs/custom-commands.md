@@ -1,0 +1,84 @@
+# Creating a Command
+How to create a custom command
+
+### Create the command class
+```java
+public class SimplePluginCommand extends PluginCommand<ExamplePlugin> {
+
+    public SimplePluginCommand(ExamplePlugin owner) {
+        super("simplecommand", owner);
+        this.setDescription("Simple Command");
+        this.setPermission("example.simplecommand");
+    }
+
+    @Override
+    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+        if (!this.testPermission(sender)) {
+            return false;
+        }
+
+        if (sender instanceof Player player) {
+            player.giveItem(ItemTypes.DIAMOND.createItem());
+            player.sendMessage(TextFormat.AQUA + "You have been given an item created from item type!");
+        }
+
+        sender.sendMessage(TextFormat.GREEN + "Command successfully executed!");
+        return true;
+    }
+}
+```
+
+### Create the command with parameters class
+```java
+public class RandomEffectsCommand extends PluginCommand<ExamplePlugin> {
+
+    private final Random random = new Random();
+
+    public RandomEffectsCommand(ExamplePlugin owner) {
+        super("randomeffects", owner);
+        this.setDescription("Give to player random effects");
+        // Adding command parameters
+        this.getCommandParameters().clear();
+        this.addCommandParameters("default", new CommandParameter[]{
+            CommandParameter.newType("player", CommandParamType.TARGET, new PlayersNode())
+        });
+        // Enable param tree parsing (if used new command api)
+        this.enableParamTree();
+    }
+
+    @Override
+    public int execute(CommandSender sender, String commandLabel, Map.Entry<String, ParamList> result, CommandLogger log) {
+        ParamList list = result.getValue();
+
+        List<Player> players = list.getResult(0);
+        if (players.isEmpty()) {
+            log.addNoTargetMatch().output();
+            return 0;
+        }
+
+        // Get random effect type and create effect instance
+        EffectType effectType = EffectType.get(random.nextInt(1, 31));
+        Effect effect = Effect.get(effectType)
+            .setAmplifier(random.nextInt(1, 3))
+            .setDuration(random.nextInt(20, 1200));
+
+        for (Player player : players) {
+            player.addEffect(effect);
+        }
+
+        log.addSuccess(TextFormat.GREEN + "Random effect has been given to " + players.size() + " players!").output();
+        return 1;
+    }
+}
+```
+
+### Register command on enable
+```java
+@Override
+public void onEnable() {
+    this.getServer().getCommandMap().register("ExamplePlugin", new SimplePluginCommand(this));
+    this.getServer().getCommandMap().register("ExamplePlugin", new RandomEffectsCommand(this));
+}
+```
+
+Need more references? [ExamplePlugin/command](https://github.com/LuminiaDev/ExamplePlugin/tree/master/src/main/java/com/luminiadev/exampleplugin/command)
