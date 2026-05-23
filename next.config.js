@@ -4,5 +4,9 @@
 })
 
 module.exports = withNextra({
-  reactStrictMode: true
+  reactStrictMode: true,
+  i18n: {
+    locales: ['en-US', 'ru-RU'],
+    defaultLocale: 'en-US'
+  }
 })

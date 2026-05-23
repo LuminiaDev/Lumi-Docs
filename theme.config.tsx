@@ -1,14 +1,18 @@
-﻿import { DocsThemeConfig } from 'nextra-theme-docs'
+import { DocsThemeConfig } from 'nextra-theme-docs'
 
 const config: DocsThemeConfig = {
   logo: <span>Lumi Docs</span>,
   project: {
     link: 'https://github.com/KoshakMineDEV/Lumi'
   },
-  docsRepositoryBase: 'https://github.com/KoshakMineDEV/Lumi/tree/master/docs',
+  docsRepositoryBase: 'https://github.com/LuminiaDev/Lumi-Docs',
   footer: {
     text: `MIT ${new Date().getFullYear()} © Lumi Documentation`
   },
+  i18n: [
+    { locale: 'en-US', text: 'English' },
+    { locale: 'ru-RU', text: 'Русский' }
+  ],
   useNextSeoProps() {
     return {
       titleTemplate: '%s - Lumi Docs'
