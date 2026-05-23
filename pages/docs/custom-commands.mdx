@@ -1,7 +1,9 @@
-# Creating a Command
-How to create a custom command
+﻿# Create a command
 
-### Create the command class
+How to create a custom command.
+
+## Create the command class
+
 ```java
 public class SimplePluginCommand extends PluginCommand<ExamplePlugin> {
 
@@ -28,7 +30,8 @@ public class SimplePluginCommand extends PluginCommand<ExamplePlugin> {
 }
 ```
 
-### Create the command with parameters class
+## Create the command with parameters class
+
 ```java
 public class RandomEffectsCommand extends PluginCommand<ExamplePlugin> {
 
@@ -72,7 +75,8 @@ public class RandomEffectsCommand extends PluginCommand<ExamplePlugin> {
 }
 ```
 
-### Register command on enable
+## Register command on enable
+
 ```java
 @Override
 public void onEnable() {
