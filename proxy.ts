@@ -1,6 +1,7 @@
-﻿import type { NextRequest } from 'next/server'
-import { locales } from 'nextra/locales'
+export { proxy } from 'nextra/locales'
 
-export function proxy(request: NextRequest) {
-  return locales(request)
+export const config = {
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico|icon.svg|apple-icon.png|manifest|_pagefind).*)'
+  ]
 }

@@ -1,0 +1,6 @@
+export default {
+  multiversion: 'Настройка мультиверсии',
+  'custom-commands': 'Создание команды',
+  listener: 'Создание листенера',
+  dimensions: 'Кастомные измерения'
+}
