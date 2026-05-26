@@ -1,0 +1,6 @@
+export default {
+  multiversion: 'Setup multiversion',
+  'custom-commands': 'Create a command',
+  listener: 'Create a listener',
+  dimensions: 'Custom dimensions'
+}

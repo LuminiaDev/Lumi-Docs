@@ -1,7 +1,9 @@
-# Creating a Command
-How to create a custom command
+# Создание команды
 
-### Create the command class
+Как создать кастомную команду.
+
+## Создайте класс команды
+
 ```java
 public class SimplePluginCommand extends PluginCommand<ExamplePlugin> {
 
@@ -28,7 +30,8 @@ public class SimplePluginCommand extends PluginCommand<ExamplePlugin> {
 }
 ```
 
-### Create the command with parameters class
+## Создайте класс команды с параметрами
+
 ```java
 public class RandomEffectsCommand extends PluginCommand<ExamplePlugin> {
 
@@ -72,7 +75,8 @@ public class RandomEffectsCommand extends PluginCommand<ExamplePlugin> {
 }
 ```
 
-### Register command on enable
+## Зарегистрируйте команду в onEnable
+
 ```java
 @Override
 public void onEnable() {
@@ -81,4 +85,4 @@ public void onEnable() {
 }
 ```
 
-Need more references? [ExamplePlugin/command](https://github.com/LuminiaDev/ExamplePlugin/tree/master/src/main/java/com/luminiadev/exampleplugin/command)
+Нужны дополнительные примеры? [ExamplePlugin/command](https://github.com/LuminiaDev/ExamplePlugin/tree/master/src/main/java/com/luminiadev/exampleplugin/command)

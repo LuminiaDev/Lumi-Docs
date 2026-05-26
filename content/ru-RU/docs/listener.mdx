@@ -1,12 +1,17 @@
-# Create a Listener
-How to create listener
+import { Callout } from 'nextra/components'
 
-::: tip
-**For high-performance plugins use events without reflection!**
-:::
+# Создание листенера
 
-### Register events without reflection
-This will register events without reflection
+Как создать listener.
+
+<Callout type="warning">
+  Для высокопроизводительных плагинов используйте события без reflection.
+</Callout>
+
+## Регистрация событий без reflection
+
+Это зарегистрирует события без reflection:
+
 ```java
 @Override
 public void onEnable() {
@@ -20,8 +25,9 @@ public void onEnable() {
 }
 ```
 
-### Register events with reflection
-This will create events with reflection
+## Регистрация событий с reflection
+
+Это зарегистрирует события с reflection:
 
 ```java
 public class EventListener implements Listener {
@@ -38,7 +44,8 @@ public class EventListener implements Listener {
 }
 ```
 
-Then register it in your plugin.
+Затем зарегистрируйте его в вашем плагине:
+
 ```java
 @Override
 public void onEnable() {
