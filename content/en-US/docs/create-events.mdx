@@ -1,0 +1,89 @@
+import { Callout } from 'nextra/components' 
+
+# Event system
+
+## Creating events:
+
+Creating an event class:
+```java
+import cn.nukkit.event.Event;
+
+public class CustomDataEvent extends Event {
+
+    private String data;
+
+    public CustomDataEvent(String data) {
+        this.data = data;
+    }
+
+    public String getData() {
+        return this.data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+}
+```
+
+Creating a cancellable event:
+```java
+import cn.nukkit.event.Event;
+import cn.nukkit.event.Cancellable;
+
+public class CustomCancellableEvent extends Event implements Cancellable {
+
+    // todo
+}
+```
+
+## Calling events:
+
+Calling an event:
+```java
+event.call(); // returns false if the event was canceled. 
+```
+
+Calling an event on another EventBus:
+```java
+event.call(myEventBus);
+```
+
+## Removal of HandlerList
+<Callout>
+In version 1.6.0, the HandlerList class was marked as deprecated and is no longer required in event classes. 
+
+Before:
+```java
+package cn.nukkit.event.player;
+
+import cn.nukkit.Player;
+import cn.nukkit.event.HandlerList;
+
+public class PlayerJumpEvent extends PlayerEvent {
+
+    private static final HandlerList handlers = new HandlerList();
+
+    public static HandlerList getHandlers() {
+        return handlers;
+    }
+
+    public PlayerJumpEvent(Player player) {
+        this.player = player;
+    }
+}
+```
+After:
+```java
+package cn.nukkit.event.player;
+
+import cn.nukkit.Player;
+
+public class PlayerJumpEvent extends PlayerEvent {
+
+    public PlayerJumpEvent(Player player) {
+        this.player = player;
+    }
+}
+```
+</Callout>

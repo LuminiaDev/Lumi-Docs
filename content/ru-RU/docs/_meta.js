@@ -1,6 +1,7 @@
 export default {
   multiversion: 'Настройка мультиверсии',
   'custom-commands': 'Создание команды',
-  listener: 'Создание листенера',
+  'create-listeners': 'Создание слушатей',
+  'create-events': 'Создание событий',
   dimensions: 'Кастомные измерения'
 }

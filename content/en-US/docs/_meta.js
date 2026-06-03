@@ -1,6 +1,7 @@
 export default {
   multiversion: 'Setup multiversion',
   'custom-commands': 'Create a command',
-  listener: 'Create a listener',
+  'create-listeners': 'Create a listeners',
+  'create-events': 'Create an events',
   dimensions: 'Custom dimensions'
 }
