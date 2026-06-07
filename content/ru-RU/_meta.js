@@ -1,4 +1,5 @@
 export default {
   index: 'Главная',
-  docs: 'Документация'
+  docs: 'Документация',
+  versioning: 'Версионирование'
 }
