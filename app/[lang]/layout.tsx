@@ -53,7 +53,10 @@ export default async function RootLayout({ children, params }: LayoutProps) {
             { locale: 'en-US', name: 'English' },
             { locale: 'ru-RU', name: 'Русский' }
           ]}
-          sidebar={{ defaultMenuCollapseLevel: 1 }}
+          sidebar={{
+            autoCollapse: false,
+            defaultMenuCollapseLevel: 99
+          }}
           navigation={{ prev: true, next: true }}
           editLink="Edit this page on GitHub"
           pageMap={pageMap}
