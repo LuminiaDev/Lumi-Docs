@@ -1,0 +1,84 @@
+import { Callout } from 'nextra/components'
+
+# Создание кастомного блока
+
+Полный класс блока будет выглядеть таким образом:
+```java filename="BlockCustomExample.java"
+import cn.nukkit.Player;
+import cn.nukkit.block.Block;
+import cn.nukkit.block.customblock.CustomBlock;
+import cn.nukkit.block.customblock.CustomBlockDefinition;
+import cn.nukkit.network.protocol.types.inventory.creative.CreativeItemCategory;
+
+public class BlockCustomExample extends Block implements CustomBlock {
+
+    @Override
+    public String getName() {
+        return "Example Block";
+    }
+
+    @Override
+    public CustomBlockDefinition getDefinition() {
+        return CustomBlockDefinition.builder(this, "stone", CreativeItemCategory.ITEMS)
+                .name("Example Block")
+                .build();
+    }
+
+    @Override
+    public int getId() {
+        return CustomBlock.super.getId();
+    }
+
+    @Override
+    public String getIdentifier() {
+        return "lumi:example_block";
+    }
+}
+```
+
+Укажите название блока и строчный идентификатор предмета:
+
+```java filename="BlockCustomExample.java" {3-6,13-16} /"Example Block"/ /"lumi:example_block"/\
+public class BlockCustomExample extends Block implements CustomBlock {
+
+    @Override
+    public String getName() {
+        return "Example Block";
+    }
+
+    @Override
+    public int getId() {
+        return CustomBlock.super.getId();
+    }
+
+    @Override
+    public String getIdentifier() {
+        return "lumi:example_block";
+    }
+```
+<Callout type="warning">
+  Идентификатор должен быть строго в таком формате: `пространство_имен:идентификатор`. Пример: `custom:myitem`.
+</Callout>
+<Callout type="error">
+  Метод `public int getId()` должен оставаться `неизменным` во всех блоках и возвращать `CustomBlock.super.getId()`. Таким образом, числовой идентификатор блока генерируется Lumi автоматически; если вы укажете его вручную, вы рискуете нарушить работу всех пользовательских блоков на сервере.
+</Callout>
+
+Создайте определение блока:
+```java filename="ItemCustomExample.java" {3-8}
+public class BlockCustomExample extends Block implements CustomBlock {
+ 
+    @Override
+    public CustomBlockDefinition getDefinition() {
+        return CustomBlockDefinition.builder(this, "stone", CreativeItemCategory.ITEMS)
+                .name("Example Block")
+                .build();
+    }
+}
+```
+<Callout type="info">
+  В определении блока можно указать все его свойства и параметры, такие как категория в креативном инвентаре, материалы (текстуры) и другие свойства.
+</Callout>
+<Callout>
+  Вы можете задать другие свойства предмета с помощью NBT-тегов с помощью метода `CustomBlockDefinition.Builder#customBuild`
+</Callout>
+Все методы определения материалов, геометрии и других свойств можно найти [здесь](https://github.com/KoshakMineDEV/Lumi/blob/d6616976265a9b3c4a0ab1a2a57682d58b6ab17b/src/main/java/cn/nukkit/block/customblock/CustomBlockDefinition.java#L62-L408)

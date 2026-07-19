@@ -1,0 +1,60 @@
+import { Callout } from 'nextra/components'
+
+# Creating a Custom Item
+
+The complete item class will look like this:
+
+```java filename="ItemCustomExample.java"
+import cn.nukkit.item.customitem.CustomItemDefinition;
+import cn.nukkit.item.customitem.ItemCustom;
+import cn.nukkit.network.protocol.types.inventory.creative.CreativeItemCategory;
+
+public class ItemCustomExample extends ItemCustom {
+
+    public ItemCustomExample() {
+        super("lumi:example_item", "Example Item", "diamond");
+    }
+
+    @Override
+    public CustomItemDefinition getDefinition() {
+        return CustomItemDefinition.simpleBuilder(this, CreativeItemCategory.ITEMS).build();
+    }
+}
+```
+
+Specify the item's string identifier, name, and texture:
+
+```java filename="ItemCustomExample.java" {4} /lumi:example_item/ /Example Item/ /diamond/
+public class ItemCustomExample extends ItemCustom {
+
+    public ItemCustomExample() {
+        super("lumi:example_item", "Example Item", "diamond");
+    }
+```
+
+<Callout type="warning">
+  The identifier must strictly follow this format: `namespace:identifier`. Example: `custom:myitem`.
+</Callout>
+
+Create the item definition:
+
+```java filename="ItemCustomExample.java" {7-10}
+public class ItemCustomExample extends ItemCustom {
+ 
+    public ItemCustomExample() {
+        super("lumi:example_item", "Example Item", "diamond");
+    }
+ 
+    @Override
+    public CustomItemDefinition getDefinition() {
+        return CustomItemDefinition.simpleBuilder(this, CreativeItemCategory.ITEMS).build();
+    }
+```
+
+<Callout type="info">
+  The item definition allows you to specify all of its properties and parameters, such as its creative inventory category, rendering offset, and other properties.
+</Callout>
+
+<Callout>
+  You can set additional item properties using NBT tags via the `CustomItemDefinition.SimpleBuilder#customBuild` method.
+</Callout>
