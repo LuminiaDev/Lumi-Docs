@@ -1,0 +1,82 @@
+import { Tabs, Callout, Steps } from 'nextra/components'
+
+# Luminesk
+
+## Установка
+
+Вариант 1: Однострочный установщик (рекомендуется):
+
+<Tabs items={['Linux и macOS', 'Windows (PowerShell)']}>
+  <Tabs.Tab>
+    ```bash
+    curl -fsSL https://luminesk.taskov1ch.xyz/sh | sh
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```bash
+    iwr -useb https://luminesk.taskov1ch.xyz/ps1 | iex
+    ```
+    <Callout type="warning">Выполните эту команду в PowerShell</Callout>
+  </Tabs.Tab>
+</Tabs>
+
+Вариант 2: Установка из PyPI:
+
+```bash
+pip install luminesk-cli
+```
+```bash
+uv pip install luminesk-cli
+```
+```bash
+pipx install luminesk-cli
+```
+
+<Callout type="info">
+    После установки проверьте версию Luminesk:
+    ```bash
+    nesk --version
+    ```
+</Callout>
+
+## Использование
+
+<Steps>
+
+### Step 1
+ 
+Создайте сервер:
+```bash
+nesk init -c lumi -n Lumi -t lumi -d ./server-lumi
+```
+Какие параметры мы использовали?
+- `-c` - Программное обеспечение. В нашем случае - Lumi.
+- `-n` - Название сервера
+- `-t` - Тег сервера для доступа к нему
+- `-d` - Каталог сервера (сейчас - каталог "server-lumi")
+ 
+### Step 2
+
+Перейдите в каталог сервера:
+```bash
+cd ./server-lumi
+```
+
+### Step 3
+
+Запустите сервер:
+```bash
+nesk start
+```
+<Callout type="error">
+    Возможные ошибки:
+    - `Docker was not found in PATH` - На этом компьютере Docker не установлен. Перейдите на [страницу загрузки](https://docs.docker.com/get-started/get-docker/) Docker.
+    - `Docker failed to pull runtime image` - Первоначальная настройка Docker не завершена. Завершите установку и попробуйте ещё раз.
+</Callout>
+</Steps>
+
+## Дополнительная информация
+Проект Luminesk является проектом с открытым исходным кодом и не разрабатывается командой Luminia Dev. 
+
+- Веб-сайт проекта: https://luminesk.taskov1ch.xyz/
+- Страница на GitHub: https://github.com/task-v1/luminesk-cli

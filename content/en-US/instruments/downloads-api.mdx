@@ -1,0 +1,389 @@
+import { Callout, Tabs } from 'nextra/components'
+
+# Downloads website API
+
+The downloads website API lets you retrieve available projects and builds, filter versions, find a
+specific build by its metadata, and obtain download links.
+
+Base URL of the current API version:
+
+```text
+https://dl.lumi.su/api/v1
+```
+
+<Callout type="info">
+  The API does not require authentication. All responses use JSON, and GET requests support CORS.
+</Callout>
+
+## Health check
+
+```http
+GET /api/v1/health
+```
+
+Example request:
+
+```bash
+curl https://dl.lumi.su/api/v1/health
+```
+
+Response:
+
+```json
+{
+  "status": "ok",
+  "version": "v1"
+}
+```
+
+## Projects
+
+### List all projects
+
+```http
+GET /api/v1/projects
+```
+
+This endpoint returns an array containing every project available on the downloads website.
+
+```bash
+curl https://dl.lumi.su/api/v1/projects
+```
+
+Example response:
+
+```json
+[
+  {
+    "id": "lumi",
+    "name": "Lumi",
+    "description": "Minecraft Bedrock server software",
+    "domains": [
+      "dl.lumi.su"
+    ],
+    "branches": [
+      {
+        "id": "stable",
+        "labelKey": "branches.stable",
+        "showInAllBranches": true
+      },
+      {
+        "id": "dev",
+        "labelKey": "branches.dev",
+        "showInAllBranches": true
+      }
+    ],
+    "providers": [
+      {
+        "id": "stable-releases",
+        "label": "Stable / Releases",
+        "branch": "stable",
+        "branchLabelKey": "branches.stable"
+      }
+    ],
+    "links": {
+      "self": "https://dl.lumi.su/api/v1/projects/lumi",
+      "versions": "https://dl.lumi.su/api/v1/projects/lumi/versions",
+      "website": "https://dl.lumi.su/project/lumi"
+    }
+  }
+]
+```
+
+### Get a project
+
+```http
+GET /api/v1/projects/{projectId}
+```
+
+The `projectId` parameter corresponds to the `id` field returned by the project collection.
+
+```bash
+curl https://dl.lumi.su/api/v1/projects/lumi
+```
+
+If the project does not exist, the API returns status `404`:
+
+```json
+{
+  "message": "Project not found"
+}
+```
+
+## Project versions
+
+```http
+GET /api/v1/projects/{projectId}/versions
+```
+
+Without query parameters, the endpoint returns all visible project builds. Builds are sorted from
+newest to oldest.
+
+```bash
+curl https://dl.lumi.su/api/v1/projects/lumi/versions
+```
+
+### Filters
+
+| Parameter | Description |
+| --- | --- |
+| `branches` | One or more branches |
+| `versions` | One or more version series, such as `1.6` |
+| `limit` | Maximum number of results from `1` to `1000` |
+
+Multiple values can be separated with commas:
+
+```http
+GET /api/v1/projects/lumi/versions?branches=stable,dev&versions=1.5,1.6
+```
+
+Alternatively, repeat the parameter:
+
+```http
+GET /api/v1/projects/lumi/versions?branches=stable&branches=dev
+```
+
+To retrieve the latest build from a branch:
+
+```http
+GET /api/v1/projects/lumi/versions?branches=dev&limit=1
+```
+
+<Callout type="info">
+  When `branches` is omitted, the API hides builds from providers that are disabled in the
+  all-branches view. Specify the branch explicitly to retrieve these builds.
+</Callout>
+
+### Version format
+
+The endpoint returns an array of objects with the following structure:
+
+```json
+[
+  {
+    "id": "dev-snapshots:1.6.4-SNAPSHOT:Lumi-1.6.4-20260720.124024-6.jar",
+    "version": "1.6.4-20260720.124024-6",
+    "logicalVersion": "1.6.4-SNAPSHOT",
+    "series": "1.6",
+    "fileName": "Lumi-1.6.4-20260720.124024-6.jar",
+    "modifiedAt": "2026-07-20T12:41:19.813Z",
+    "branch": {
+      "id": "dev",
+      "labelKey": "branches.dev"
+    },
+    "provider": {
+      "id": "dev-snapshots",
+      "label": "Dev / Snapshots"
+    },
+    "source": {
+      "text": "refactor: armor trim api",
+      "url": "https://github.com/KoshakMineDEV/Lumi/commit/50c58758981f7a890d39f22b3aba073586ea02c8"
+    },
+    "downloadUrl": "https://dl.lumi.su/download/lumi/dev/Lumi-1.6.4-20260720.124024-6.jar",
+    "directDownloadUrl": "https://repo.lumi.su/snapshots/com/koshakmine/Lumi/1.6.4-SNAPSHOT/Lumi-1.6.4-20260720.124024-6.jar",
+    "checksumUrl": "https://repo.lumi.su/snapshots/com/koshakmine/Lumi/1.6.4-SNAPSHOT/Lumi-1.6.4-20260720.124024-6.jar.sha1",
+    "properties": {
+      "git.branch": "dev",
+      "git.commit.id": "50c58758981f7a890d39f22b3aba073586ea02c8",
+      "git.commit.message.short": "refactor: armor trim api",
+      "github.repo": "KoshakMineDev/Lumi"
+    }
+  }
+]
+```
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `id` | `string` | Unique entry identifier |
+| `version` | `string` | Resolved file version |
+| `logicalVersion` | `string` | Artifact version reported by the provider |
+| `series` | `string` | Version series, such as `1.6` |
+| `fileName` | `string` | Downloadable file name |
+| `modifiedAt` | `string \| null` | Modification time in ISO 8601 format |
+| `branch` | `object` | Build branch and its localization key |
+| `provider` | `object` | Provider that supplied the build |
+| `source` | `object \| null` | Source code link and description |
+| `downloadUrl` | `string` | Download link served by the website |
+| `directDownloadUrl` | `string` | Direct provider file link |
+| `checksumUrl` | `string \| null` | Checksum download link |
+| `properties` | `object \| null` | Provider-specific build metadata |
+
+<Callout type="warning">
+  The contents of `properties` depend on the provider. A particular key, such as `git.commit.id`,
+  is not guaranteed to exist for every project or build.
+</Callout>
+
+## Looking up a specific version
+
+```http
+GET /api/v1/projects/{projectId}/versions/lookup
+```
+
+Lookup is intended for cases where exactly one build must be found by its fields or metadata.
+Matching is exact and case-sensitive.
+
+The `branch` parameter and at least one additional filter are required:
+
+```http
+GET /api/v1/projects/lumi/versions/lookup?branch=dev&properties.git.commit.id=50c58758981f7a890d39f22b3aba073586ea02c8
+```
+
+### Available fields
+
+The following version fields can be searched:
+
+```text
+branch
+branchLabel
+checksumUrl
+downloadUrl
+fileName
+id
+logicalVersion
+modifiedAt
+providerId
+providerLabel
+series
+showInAllBranches
+sourceText
+sourceUrl
+version
+```
+
+Filter names correspond to internal `VersionEntry` fields. Therefore, lookup field `downloadUrl`
+corresponds to `directDownloadUrl` in the public response, `providerId` to `provider.id`,
+`providerLabel` to `provider.label`, `branchLabel` to `branch.labelKey`, and `sourceText` and
+`sourceUrl` to fields inside the `source` object. The `modifiedAt` filter accepts either ISO 8601
+or the provider's original numeric timestamp.
+
+Use the `properties.{key}` format to search provider metadata:
+
+```http
+GET /api/v1/projects/lumi/versions/lookup?branch=dev&properties.git.commit.id=50c58758981f7a890d39f22b3aba073586ea02c8
+```
+
+Dots inside a property name are part of the key. Multiple filters are combined with logical AND:
+
+```http
+GET /api/v1/projects/lumi/versions/lookup?branch=dev&providerId=dev-snapshots&series=1.6&properties.git.commit.id=50c58758981f7a890d39f22b3aba073586ea02c8
+```
+
+### Lookup result
+
+```json
+{
+  "version": {
+    "fileName": "Lumi-1.6.4-20260720.124024-6.jar"
+  },
+  "position": {
+    "index": 0,
+    "newerCount": 0,
+    "olderCount": 12,
+    "total": 13
+  },
+  "neighbors": {
+    "newer": null,
+    "older": {
+      "fileName": "Lumi-1.6.4-20260719.101500-5.jar"
+    }
+  }
+}
+```
+
+- `index` — zero-based build position within the branch;
+- `newerCount` — number of newer builds;
+- `olderCount` — number of older builds;
+- `total` — total number of builds in the branch;
+- `neighbors.newer` — previous, newer build;
+- `neighbors.older` — next, older build.
+
+<Callout type="warning">
+  Lookup must resolve to exactly one version. If the filters match multiple builds, the API returns
+  status `409` and the match count. Add a more specific filter, such as `properties.git.commit.id`
+  or `fileName`.
+</Callout>
+
+Example ambiguous result:
+
+```json
+{
+  "matches": 13,
+  "message": "More than one version matched the lookup filters"
+}
+```
+
+## Using the API
+
+<Tabs items={['curl', 'JavaScript', 'Python']}>
+  <Tabs.Tab>
+    ```bash
+    curl "https://dl.lumi.su/api/v1/projects/lumi/versions?branches=dev&versions=1.6&limit=1"
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```js
+    const response = await fetch(
+      'https://dl.lumi.su/api/v1/projects/lumi/versions?branches=dev&versions=1.6&limit=1'
+    )
+
+    if (!response.ok) {
+      throw new Error(`API request failed: ${response.status}`)
+    }
+
+    const versions = await response.json()
+    console.log(versions[0])
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```python
+    import requests
+
+    response = requests.get(
+        "https://dl.lumi.su/api/v1/projects/lumi/versions",
+        params={
+            "branches": "dev",
+            "versions": "1.6",
+            "limit": 1,
+        },
+        timeout=30,
+    )
+    response.raise_for_status()
+
+    versions = response.json()
+    print(versions[0])
+    ```
+  </Tabs.Tab>
+</Tabs>
+
+## Errors
+
+| Status | Meaning |
+| --- | --- |
+| `400 Bad Request` | Invalid or unsupported parameters were provided |
+| `404 Not Found` | Project, version, or endpoint was not found |
+| `409 Conflict` | Lookup matched more than one version |
+| `500 Internal Server Error` | The request or provider data could not be processed |
+
+Regular error:
+
+```json
+{
+  "message": "Version not found"
+}
+```
+
+Validation errors also include a `details` field:
+
+```json
+{
+  "details": {
+    "formErrors": [],
+    "fieldErrors": {
+      "limit": [
+        "Too small: expected number to be >=1"
+      ]
+    }
+  },
+  "message": "Invalid query parameters"
+}
+```

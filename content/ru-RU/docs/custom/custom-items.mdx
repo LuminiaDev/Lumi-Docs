@@ -1,0 +1,55 @@
+import { Callout } from 'nextra/components'
+
+# Создание кастомного предмета
+
+Полный класс предмета будет выглядеть таким образом:
+```java filename="ItemCustomExample.java"
+import cn.nukkit.item.customitem.CustomItemDefinition;
+import cn.nukkit.item.customitem.ItemCustom;
+import cn.nukkit.network.protocol.types.inventory.creative.CreativeItemCategory;
+
+public class ItemCustomExample extends ItemCustom {
+
+    public ItemCustomExample() {
+        super("lumi:example_item", "Example Item", "diamond");
+    }
+
+    @Override
+    public CustomItemDefinition getDefinition() {
+        return CustomItemDefinition.simpleBuilder(this, CreativeItemCategory.ITEMS).build();
+    }
+}
+```
+
+Укажите строчный идентификатор предмета, название предмета и его текстуру:
+
+```java filename="ItemCustomExample.java" {4} /lumi:example_item/ /Example Item/ /diamond/
+public class ItemCustomExample extends ItemCustom {
+
+    public ItemCustomExample() {
+        super("lumi:example_item", "Example Item", "diamond");
+    }
+```
+<Callout type="warning">
+  Идентификатор должен быть строго в таком формате: `пространство_имен:идентификатор`. Пример: `custom:myitem`.
+</Callout>
+
+Создайте определение предмета:
+```java filename="ItemCustomExample.java" {7-10}
+public class ItemCustomExample extends ItemCustom {
+ 
+    public ItemCustomExample() {
+        super("lumi:example_item", "Example Item", "diamond");
+    }
+ 
+    @Override
+    public CustomItemDefinition getDefinition() {
+        return CustomItemDefinition.simpleBuilder(this, CreativeItemCategory.ITEMS).build();
+    }
+```
+<Callout type="info">
+  В определении предмета можно указать все его свойства и параметры, такие как категория в креативном инвентаре, смещение рендеринга и другие свойства.
+</Callout>
+<Callout>
+  Вы можете задать другие свойства предмета с помощью NBT-тегов с помощью метода `CustomItemDefinition.SimpleBuilder#customBuild`
+</Callout>

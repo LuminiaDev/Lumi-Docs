@@ -1,0 +1,91 @@
+import { Callout } from 'nextra/components'
+
+# Создание кастомных зачарований
+
+## Создание зачарования
+
+Полный класс зачарования будет выглядеть таким образом:
+```java filename="EnchantmentCustomExample.java"
+import cn.nukkit.item.enchantment.Enchantment;
+import cn.nukkit.item.enchantment.EnchantmentRarity;
+import cn.nukkit.item.enchantment.EnchantmentType;
+import cn.nukkit.utils.Identifier;
+
+public class EnchantmentCustomExample extends Enchantment {
+
+    public EnchantmentCustomExample() {
+        super(new Identifier("lumi:custom_enchant"), "Example enchantment", EnchantmentRarity.COMMON, EnchantmentType.ALL);
+    }
+}   
+```
+
+Укажите строчный идентификатор зачарования, название зачарования, его редкость и тип предмета:
+
+```java filename="ItemCustomExample.java" {4} /lumi:custom_enchant/ /Example enchantment/ /EnchantmentRarity.COMMON/ /EnchantmentType.ALL/
+public class EnchantmentCustomExample extends Enchantment {
+
+    public EnchantmentCustomExample() {
+        super(new Identifier("lumi:custom_enchant"), "Example enchantment", EnchantmentRarity.COMMON, EnchantmentType.ALL);
+    }
+```
+<Callout type="warning">
+  Идентификатор должен быть строго в таком формате: `пространство_имен:идентификатор`. Пример: `custom:myenchantment`.
+</Callout>
+
+## Регистрация зачарования
+```java /true/
+@Override
+public void onLoad() {
+    Registries.ENCHANTMENT.registerCustom(new EnchantmentCustomExample(), true);
+}    
+```
+<Callout>
+  true — книга чар будет зарегистрирована; чтобы книга чар не была зарегистрирована, установите значение false
+</Callout>
+
+## Обработка зачарования
+
+Проверить, имеет ли предмет зачарование, можно с помощью метода `Item#hasCustomEnchantment(String identifier)`. Пример кода:
+
+```java {2-4} /hasCustomEnchantment/
+this.getServer().getEventBus().subscribe(BlockBreakEvent.class, event -> {
+    if (event.getItem().hasCustomEnchantment("lumi:custom_enchant")) {
+        // Напишите свой код тут
+    }
+});
+```
+
+## Добавление зачарования на предмет
+Кастомное зачарование накладывается на предмет так же, как и обычное зачарование:
+```java
+item.addEnchantment(new EnchantmentCustomExample());
+```
+или
+```java
+item.addEnchantment(Enchantment.get("lumi:custom_enchant"));
+```
+
+## Редкости зачарований (EnchantmentRarity)
+
+`EnchantmentRarity.COMMON` — Обычное     
+`EnchantmentRarity.UNCOMMON` — Необычное     
+`EnchantmentRarity.RARE` — Редкое    
+`EnchantmentRarity.VERY_RARE` — Очень редкое     
+
+## Типы зачарований (EnchantmentType)
+
+`EnchantmentType.ALL` — Все предметы    
+`EnchantmentType.ARMOR` — Любая броня   
+`EnchantmentType.ARMOR_HEAD` — Шлемы    
+`EnchantmentType.ARMOR_TORSO` — Нагрудники  
+`EnchantmentType.ARMOR_LEGS` — Поножи   
+`EnchantmentType.ARMOR_FEET` — Ботинки  
+`EnchantmentType.SWORD` — Мечи  
+`EnchantmentType.DIGGER` — Инструменты для добычи   
+`EnchantmentType.FISHING_ROD` — Удочки  
+`EnchantmentType.BREAKABLE` — Предметы с прочностью     
+`EnchantmentType.BOW` — Луки    
+`EnchantmentType.WEARABLE` — Носимые предметы   
+`EnchantmentType.TRIDENT` — Трезубцы    
+`EnchantmentType.CROSSBOW` — Арбалеты   
+`EnchantmentType.MACE` — Булавы     

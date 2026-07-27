@@ -1,0 +1,99 @@
+import { Callout } from 'nextra/components'
+
+# Creating Custom Enchantments
+
+## Creating an Enchantment
+
+The complete enchantment class will look like this:
+
+```java filename="EnchantmentCustomExample.java"
+import cn.nukkit.item.enchantment.Enchantment;
+import cn.nukkit.item.enchantment.EnchantmentRarity;
+import cn.nukkit.item.enchantment.EnchantmentType;
+import cn.nukkit.utils.Identifier;
+
+public class EnchantmentCustomExample extends Enchantment {
+
+    public EnchantmentCustomExample() {
+        super(new Identifier("lumi:custom_enchant"), "Example enchantment", EnchantmentRarity.COMMON, EnchantmentType.ALL);
+    }
+}
+```
+
+Specify the enchantment's string identifier, name, rarity, and applicable item type:
+
+```java filename="ItemCustomExample.java" {4} /lumi:custom_enchant/ /Example enchantment/ /EnchantmentRarity.COMMON/ /EnchantmentType.ALL/
+public class EnchantmentCustomExample extends Enchantment {
+
+    public EnchantmentCustomExample() {
+        super(new Identifier("lumi:custom_enchant"), "Example enchantment", EnchantmentRarity.COMMON, EnchantmentType.ALL);
+    }
+```
+
+<Callout type="warning">
+  The identifier must strictly follow this format: `namespace:identifier`. Example: `custom:myenchantment`.
+</Callout>
+
+## Registering an Enchantment
+
+```java /true/
+@Override
+public void onLoad() {
+    Registries.ENCHANTMENT.registerCustom(new EnchantmentCustomExample(), true);
+}
+```
+
+<Callout>
+  Set this value to `true` to register the enchanted book. Set it to `false` if the enchanted book should not be registered.
+</Callout>
+
+## Handling an Enchantment
+
+Use the `Item#hasCustomEnchantment(String identifier)` method to check whether an item has a specific enchantment. Example:
+
+```java {2-4} /hasCustomEnchantment/
+this.getServer().getEventBus().subscribe(BlockBreakEvent.class, event -> {
+    if (event.getItem().hasCustomEnchantment("lumi:custom_enchant")) {
+        // Write your code here
+    }
+});
+```
+
+## Adding an Enchantment to an Item
+
+A custom enchantment is applied to an item in the same way as a standard enchantment:
+
+```java
+item.addEnchantment(new EnchantmentCustomExample());
+```
+
+or:
+
+```java
+item.addEnchantment(Enchantment.get("lumi:custom_enchant"));
+```
+
+## Enchantment Rarities (`EnchantmentRarity`)
+
+`EnchantmentRarity.COMMON` — Common     
+`EnchantmentRarity.UNCOMMON` — Uncommon     
+`EnchantmentRarity.RARE` — Rare     
+`EnchantmentRarity.VERY_RARE` — Very rare   
+
+## Enchantment Types (`EnchantmentType`)
+
+`EnchantmentType.ALL` — All items   
+`EnchantmentType.ARMOR` — Any armor     
+`EnchantmentType.ARMOR_HEAD` — Helmets      
+`EnchantmentType.ARMOR_TORSO` — Chestplates     
+`EnchantmentType.ARMOR_LEGS` — Leggings     
+`EnchantmentType.ARMOR_FEET` — Boots     
+`EnchantmentType.SWORD` — Swords    
+`EnchantmentType.DIGGER` — Mining tools     
+`EnchantmentType.FISHING_ROD` — Fishing rods    
+`EnchantmentType.BREAKABLE` — Items with durability     
+`EnchantmentType.BOW` — Bows    
+`EnchantmentType.WEARABLE` — Wearable items     
+`EnchantmentType.TRIDENT` — Tridents    
+`EnchantmentType.CROSSBOW` — Crossbows      
+`EnchantmentType.MACE` — Maces      

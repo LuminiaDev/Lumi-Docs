@@ -1,0 +1,65 @@
+import { Steps, Callout } from 'nextra/components'
+
+# Installation
+
+Quick Guide to Starting the Lumi Server
+
+## Install Java
+
+First, make sure you have Java 21 installed, which is required to run the server. Open the terminal and run the command:
+
+```bash
+java --version
+```
+
+If Java is not installed or a different version is installed, we recommend downloading the [Azul Zulu JDK](https://www.azul.com/downloads/?version=java-21-lts&package=jdk#zulu)
+
+## Manual setup 
+
+Go to the [Lumi download page](https://dl.lumi.su/?branches=stable) or download the latest version from [this link](https://dl.lumi.su/download/stable/latest)
+ 
+<img
+  src="/files/dl_lumi_su.png"
+  width="100%"
+  height="400px"
+  title="Downloads"
+  style={{
+    borderRadius: '12px',
+    marginTop: '25px',
+    border: 'none'
+  }}
+/>
+
+### Launching:
+
+<Steps>
+### Step 1
+ 
+After downloading, place the file in the folder of your choice. 
+ 
+### Step 2
+ 
+Open the terminal and navigate to the folder containing the downloaded JAR file:
+```bash
+cd path/to/your/jar
+```
+
+### Step 3
+
+Start the server with the following command pattern:
+```bash
+java -jar Lumi-<version>.jar
+```
+replace `<version>` with the appropriate version, for example full command:
+```bash
+java -jar Lumi-1.6.4.jar
+```
+</Steps>
+
+## Setup via Luminesk
+
+<Callout type="info">
+    You can simplify the installation of Lumi using the [Luminesk](https://luminesk.taskov1ch.xyz/) tool.
+</Callout>
+
+Go to [this article](/en-US/instruments/luminesk) for more detailed instructions.

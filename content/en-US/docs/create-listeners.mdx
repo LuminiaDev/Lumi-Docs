@@ -1,0 +1,98 @@
+import { Callout } from 'nextra/components' 
+
+
+# Event listener system
+
+Subscribing to listeners using the function:
+```java
+@Override
+public void onEnable() {
+    this.getServer().getEventBus().subscribe(PlayerJoinEvent.class, event -> {
+        event.setJoinMessage(TextFormat.DARK_GREEN + event.getPlayer().getName() + " joined the game!");
+    });
+
+    this.getServer().getEventBus().subscribe(PlayerQuitEvent.class, event -> {
+        event.setQuitMessage(TextFormat.DARK_GREEN + event.getPlayer().getName() + " left the game!");
+    });
+}
+```
+
+Subscriptions for all listeners in the class:
+
+<Callout>
+  For high-performance plugins, use event handlers via the function.
+</Callout>
+
+```java
+import cn.nukkit.event.EventHandler;
+import cn.nukkit.event.player.PlayerJoinEvent;
+import cn.nukkit.event.player.PlayerQuitEvent;
+
+public class PlayerEventListener {
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        event.setJoinMessage(TextFormat.DARK_GREEN + event.getPlayer().getName() + " joined the game!");
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerQuitEvent event) {
+        event.setQuitMessage(TextFormat.DARK_GREEN + event.getPlayer().getName() + " left the game!");
+    }
+}
+```
+```java
+@Override
+public void onEnable() {
+    this.getServer().getEventBus().subscribe(new PlayerEventListener());
+}
+```
+
+
+## Deprecated event listener system
+
+<Callout type="warning">
+  This event listener system is deprecated and is no longer supported. However, you can still use plugins that work with this system.
+</Callout>
+
+Subscribing to listeners using the function:
+
+```java
+@Override
+public void onEnable() {
+    this.getServer().getPluginManager().subscribeEvent(PlayerJoinEvent.class, event -> {
+        event.setJoinMessage(TextFormat.DARK_GREEN + event.getPlayer().getName() + " joined the game!");
+    }, this);
+
+    this.getServer().getPluginManager().subscribeEvent(PlayerQuitEvent.class, event -> {
+        event.setQuitMessage(TextFormat.DARK_GREEN + event.getPlayer().getName() + " left the game!");
+    }, this);
+}
+```
+
+Subscriptions for all listeners in the class:
+
+```java
+import cn.nukkit.event.EventHandler;
+import cn.nukkit.event.player.PlayerJoinEvent;
+import cn.nukkit.event.player.PlayerQuitEvent;
+
+public class EventListener implements Listener {
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        event.setJoinMessage(TextFormat.DARK_GREEN + event.getPlayer().getName() + " joined the game!");
+    }
+
+    @EventHandler
+    public void onPlayerLeave(PlayerQuitEvent event) {
+        event.setQuitMessage(TextFormat.DARK_GREEN + event.getPlayer().getName() + " left the game!");
+    }
+}
+```
+```java
+@Override
+public void onEnable() {
+    this.getServer().getPluginManager().registerEvents(new EventListener(), this);
+}
+```
