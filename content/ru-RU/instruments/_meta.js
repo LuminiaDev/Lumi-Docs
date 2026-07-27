@@ -1,3 +1,4 @@
 export default {
-  luminesk: "Luminesk"
+  luminesk: 'Luminesk',
+  'downloads-api': 'API сайта загрузок'
 }
