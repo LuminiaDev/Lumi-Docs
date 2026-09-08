@@ -1,4 +1,4 @@
 export default {
-  luminesk: 'Luminesk',
+  luminesk: 'Luminesk-CLI',
   'downloads-api': 'Downloads API'
 }

@@ -1,6 +1,6 @@
 import { Tabs, Callout, Steps } from 'nextra/components'
 
-# Luminesk
+# Luminesk-CLI
 
 ## Installation
 
@@ -39,34 +39,32 @@ pipx install luminesk-cli
     ```
 </Callout>
 
-## Usage
+## Create a Lumi server
 
 <Steps>
 
 ### Step 1
- 
-Create a server:
+
+Update the recipe catalog:
 ```bash
-nesk init -c lumi -n Lumi -t lumi -d ./server-lumi
+nesk catalog update
 ```
-What parameters did we use?
-- `-c` - Software. In our case, Lumi.
-- `-n` - Server Name
-- `-t` - Server Tag to access it
-- `-d` - Server directory (currently the "server-lumi" directory)
- 
+
 ### Step 2
 
-Navigate to the server directory:
+Install the Lumi recipe into a new directory:
 ```bash
-cd ./server-lumi
+nesk install lumi --dir ./server-lumi
 ```
+
+Luminesk-CLI downloads the recipe, shows the installation plan, and asks for
+confirmation. Docker Engine or Docker Desktop must be installed and running.
 
 ### Step 3
 
 Start the server:
 ```bash
-nesk start
+nesk start --dir ./server-lumi
 ```
 <Callout type="error">
     Possible errors:
